@@ -8,35 +8,51 @@ class AnimalTypes extends React.Component {
     super();
 
     this.state = {
-      newAnimalArr: [],
+      animalTypes: animalTypes,
       userInput: '',
     }
   }
 
-  handleInput=(event)=>{
+  handleSubmit=(event)=>{
     event.preventDefault();
+
+    console.log('user input:', this.state.userInput)
+
     this.setState({
-      userInput: event.target.value,
+      animalTypes: [...animalTypes, this.state.userInput],
     })
   }
 
-  // addToList=(event)=>{
-  //   this.setState({
-  //     animalArr: this.state.animalArr + event.target.value
-  //   })
-  // }
+  handlePersonInput=(event)=>{
+    this.setState({
+      userInput: event.target.value
+    })
+  }
 
   removeButton=(event)=>{
+    const { animalTypes } = this.state;
+    const { value } = event.target;
+
+    const filteredArr = animalTypes.filter((animal)=>{
+      return animal !== value;
+    })
+
     this.setState({
-      animalArr: event.target.value,
+      animalTypes: filteredArr,
     })
   }
 
   render() {
-    const animalList = animalTypes.map((animal, index)=>{
+    const animalList = this.state.animalTypes.map((animal, index)=>{
       return (
         <div key={index}>
-          <li>{animal}<button onClick={this.removeButton}>-</button></li>
+          <li>{animal}
+            <button 
+              onClick={this.removeButton} 
+              value={animal}
+            >-
+            </button>
+          </li>
         </div>
       )
     })
@@ -44,10 +60,14 @@ class AnimalTypes extends React.Component {
     return (
       <section className={"animal-types"}>
         <h4>Animal Types</h4>
-        <form onClick={this.handleInput}>
-          <label htmlFor="type">
-            <input type="text" id="animal-type" />
-          </label>
+        <form onClick={this.handleSubmit}>
+          <input 
+            type="text" 
+            id="animal-type"
+            placeholder="type an animal" 
+            value={ this.personInput }  
+            onChange={ this.handlePersonInput }
+          />
           <input type="submit" />
         </form>
         <ol>{animalList}</ol>
