@@ -15,17 +15,16 @@ class AnimalTypes extends React.Component {
 
   handleSubmit=(event)=>{
     event.preventDefault();
-
-    console.log('user input:', this.state.userInput)
+    const isIncluded = this.state.animalTypes.includes(this.state.userInput);
 
     this.setState({
-      animalTypes: [...animalTypes, this.state.userInput],
+      animalTypes: !isIncluded ? [this.state.userInput, ...this.state.animalTypes] : this.state.animalTypes,
     })
   }
 
   handlePersonInput=(event)=>{
     this.setState({
-      userInput: event.target.value
+      userInput: event.target.value.trim().toLowerCase()
     })
   }
 
@@ -45,22 +44,20 @@ class AnimalTypes extends React.Component {
   render() {
     const animalList = this.state.animalTypes.map((animal, index)=>{
       return (
-        <div key={index}>
-          <li>{animal}
-            <button 
-              onClick={this.removeButton} 
-              value={animal}
-            >-
-            </button>
-          </li>
-        </div>
+        <li key={index}>{animal}
+          <button 
+            onClick={this.removeButton} 
+            value={animal}
+          >-
+          </button>
+        </li>
       )
     })
 
     return (
       <section className={"animal-types"}>
         <h4>Animal Types</h4>
-        <form onClick={this.handleSubmit}>
+        <form>
           <input 
             type="text" 
             id="animal-type"
@@ -68,7 +65,7 @@ class AnimalTypes extends React.Component {
             value={ this.personInput }  
             onChange={ this.handlePersonInput }
           />
-          <input type="submit" />
+          <input onClick={this.handleSubmit} type="submit" />
         </form>
         <ol>{animalList}</ol>
       </section>
