@@ -67,7 +67,10 @@ class AnimalTypes extends React.Component {
           />
           <input onClick={this.handleSubmit} type="submit" />
         </form>
-        <ol>{animalList}</ol>
+        <ol>
+          {animalList}
+          {this.state.userInput === 'chinchilla' ? '/confused/' : '/chinchilla/'}
+        </ol>
       </section>
     );
   }
